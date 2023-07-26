@@ -3,6 +3,7 @@ package org.safaricom.et.student.model;
 import lombok.*;
 import org.safaricom.et.student.response.StudentResponse;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -15,6 +16,8 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Student extends Common {
+    @Column(unique = true)
+    private String studentId;
     private String firstName;
     private String middleName;
     private String lastName;
@@ -29,6 +32,7 @@ public class Student extends Common {
     public static StudentResponse studentResponse(Student student, String category, List<String> phones) {
         return StudentResponse.builder()
                 .id(student.getId())
+                .studentId(student.getStudentId())
                 .category(category)
                 .lastName(student.getLastName())
                 .firstName(student.getFirstName())

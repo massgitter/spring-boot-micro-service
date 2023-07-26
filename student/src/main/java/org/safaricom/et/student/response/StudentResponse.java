@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class StudentResponse {
     private Long id;
+    private String studentId;
     private String firstName;
     private String middleName;
     private String lastName;

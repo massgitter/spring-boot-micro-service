@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentRequest {
+    private String studentId;
     private String firstName;
     private String middleName;
     private String lastName;

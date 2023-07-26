@@ -1,6 +1,7 @@
 package org.safaricom.et.student.service;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.RandomStringUtils;
 import org.safaricom.et.student.client.RestClient;
 import org.safaricom.et.student.model.Address;
 import org.safaricom.et.student.model.Phone;
@@ -12,9 +13,9 @@ import org.safaricom.et.student.response.StudentResponse;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -52,6 +53,7 @@ public class StudentService {
                 .category(sCategory(request.getCategory()).getId())
                 .address(address)
                 .section(sectionRepo.findById(request.getSection()).orElse(null))
+                .studentId(request.getStudentId() != null ? request.getStudentId() : RandomStringUtils.randomAlphanumeric(8))
                 .build();
         studentRepo.save(student);
 
@@ -66,6 +68,24 @@ public class StudentService {
                     String sCategory = sCategory(student.getCategory()).getName();
                     return Student.studentResponse(student, sCategory, phones(student));
                 }).sorted(Comparator.comparing(StudentResponse::getId))
+                .collect(Collectors.toList());
+    }
+    
+    public Map<String, String> studentIdXFirstName() {
+        Map<String, String> map = new HashMap<>();
+        studentRepo.findAll().forEach(student -> map.put(student.getStudentId(), student.getFirstName()));
+        return map;
+    }
+
+    public List<String> getAllPhones() {
+        return studentRepo.findAll().stream()
+                .map(Student::getAddress)
+                .collect(Collectors.toList())
+                .stream()
+                .flatMap(address -> phoneRepo.findByAddressId(address.getId()).stream())
+                .collect(Collectors.toList())
+                .stream()
+                .map(Phone::getPhoneNo)
                 .collect(Collectors.toList());
     }
 

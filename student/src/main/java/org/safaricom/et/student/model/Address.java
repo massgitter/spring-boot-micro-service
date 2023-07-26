@@ -22,7 +22,5 @@ public class Address extends Common{
     private String kebele;
     private String houseNo;
 
-    @OneToMany
-    private List<Phone> phones;
 
 }
