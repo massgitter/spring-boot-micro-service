@@ -1,0 +1,29 @@
+server:
+  port: 8086
+spring:
+  application:
+    name: PAYMENT
+  datasource:
+    url: jdbc:postgresql://localhost:5432/safaricom
+    username: mastewal
+    password: mas1985
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8083/eureka
+springdoc:
+  swagger-ui:
+    operations-sorter: method
+    tags-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
